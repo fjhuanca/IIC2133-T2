@@ -4,8 +4,8 @@
 #include <stdbool.h>
 #include <math.h>
 
-int find_hash(Image* original, int col, int row, long long* hashes){
-    long long suma = 0;
+int find_hash(Image* original, int col, int row, long* hashes){
+    long suma = 0;
     int valor;
     for (int j=0; j<col; j++){
         for (int i=row-1; i>=0; i--){
@@ -16,7 +16,7 @@ int find_hash(Image* original, int col, int row, long long* hashes){
             else{
                 valor = 2;
             }
-            long long pot = power(RADIX, (row - i - 1), PRIME);
+            long pot = power(RADIX, (row - i - 1), PRIME);
             suma = suma + MOD ((pot * valor), PRIME);
         }
         hashes[j] = MOD(suma, PRIME);
@@ -60,7 +60,7 @@ int change_pixels(Image* original, Image* pattern, int* tochange, int *n_tochang
     }
 }
 
-int col_rolling(Image* original, Image* pattern, long long* original_hashes, int next_row){
+int col_rolling(Image* original, Image* pattern, long* original_hashes, int next_row){
     for (int j=0; j<original->width; j++){
         int org_index = coords2index(original, next_row, j);
         int value = original->pixels[org_index];
@@ -71,7 +71,7 @@ int col_rolling(Image* original, Image* pattern, long long* original_hashes, int
             value = 2;
         }
         original_hashes[j] = MOD(original_hashes[j] * RADIX + value, PRIME);
-        long long pot = power(RADIX, pattern->height, PRIME);        
+        long pot = power(RADIX, pattern->height, PRIME);        
 
         org_index = coords2index(original, next_row - pattern->height, j);
         value = original->pixels[org_index];
@@ -89,17 +89,17 @@ int col_rolling(Image* original, Image* pattern, long long* original_hashes, int
 int search(Image* original, Image* pattern){
     int tochange[original->pixel_count];
     int n_tochange = 0;
-    long long pattern_hashes[pattern->width];
-    long long original_hashes[original->width];
-    long long pattern_hash_value = 0;
-    long long original_hash_value = 0;
+    long pattern_hashes[pattern->width];
+    long original_hashes[original->width];
+    long pattern_hash_value = 0;
+    long original_hash_value = 0;
     int flag = 0;
     int col = 0;
 
     find_hash(original, original->width, pattern->height, original_hashes);
     find_hash(pattern, pattern->width, pattern->height, pattern_hashes);
     for (int i=0; i<pattern->width; i++){
-        long long pot = power(RADIX, pattern->width - i - 1, PRIME);
+        long pot = power(RADIX, pattern->width - i - 1, PRIME);
         pattern_hash_value = pattern_hash_value + pot * MOD(pattern_hashes[i], PRIME);
     }
     pattern_hash_value = MOD(pattern_hash_value, PRIME);
@@ -109,7 +109,7 @@ int search(Image* original, Image* pattern){
         original_hash_value = 0;
 
         for (int j=0; j<pattern->width; j++){
-            long long pot = power(RADIX, pattern->width - j - 1, PRIME);
+            long pot = power(RADIX, pattern->width - j - 1, PRIME);
             original_hash_value = original_hash_value + pot * MOD( original_hashes[j], PRIME);
         }
         original_hash_value = MOD(original_hash_value, PRIME);
@@ -120,7 +120,7 @@ int search(Image* original, Image* pattern){
         for (int k=pattern->width; k<original->width; k++){
             
             original_hash_value = original_hash_value * RADIX + MOD(original_hashes[k], PRIME);
-            long long pot = power(RADIX, pattern->width, PRIME);
+            long pot = power(RADIX, pattern->width, PRIME);
             original_hash_value = original_hash_value - pot * MOD(original_hashes[k - pattern->width], PRIME);
             original_hash_value = MOD(original_hash_value, PRIME);
             col = col + 1;
@@ -150,14 +150,14 @@ int index2coords(Image* matrix, int* row, int* col, int index){
     return 0;
 }
 
-long long power(long long a,long long n,long long m){
+long power(long a,long n,long m){
   if(n == 0){
     return 1;
   }
   if(n == 1){
     return a%m;
   }
-  long long pow2 = power(a,n/2,m);
+  long pow2 = power(a,n/2,m);
   if(n&1){
     return ((a%m)*(pow2)%m * (pow2)%m)%m;
   }
