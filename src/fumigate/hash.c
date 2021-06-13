@@ -26,7 +26,7 @@ int find_hash(Image* original, int col, int row, long* hashes){
 }
 
 
-int change_pixels(Image* original, Image* pattern, int* tochange, int *n_tochange, int row, int col){
+int change_pixels(Image* original, Image* out_image, Image* pattern, int row, int col){
     int org_pixels[pattern->pixel_count];
     int counter = 0;
     bool equal = true;
@@ -47,8 +47,7 @@ int change_pixels(Image* original, Image* pattern, int* tochange, int *n_tochang
             for (int j=0; j<pattern->width; j++){
                 int org_index = coords2index(original, row + i, col +j);
                 if (original->pixels[org_index] == BLACK){  
-                    tochange[*n_tochange] = org_index;
-                    *n_tochange = *n_tochange + 1; 
+                    out_image->pixels[org_index] = GRAY;
                 }
                 counter = counter + 1;
             }
@@ -86,7 +85,7 @@ int col_rolling(Image* original, Image* pattern, long* original_hashes, int next
     }
     return 0;
 }
-int search(Image* original, Image* pattern){
+int search(Image* original, Image* out_image, Image* pattern){
     int tochange[original->pixel_count];
     int n_tochange = 0;
     long pattern_hashes[pattern->width];
@@ -115,7 +114,7 @@ int search(Image* original, Image* pattern){
         original_hash_value = MOD(original_hash_value, PRIME);
 
         if (original_hash_value == pattern_hash_value){
-            flag = change_pixels(original, pattern, tochange, &n_tochange, i + 1 - pattern->height, col);
+            flag = change_pixels(original, out_image, pattern, i + 1 - pattern->height, col);
         }
         for (int k=pattern->width; k<original->width; k++){
             
@@ -126,7 +125,7 @@ int search(Image* original, Image* pattern){
             col = col + 1;
             // printf("%lld, %lld\n", original_hash_value, pattern_hash_value);
             if (original_hash_value == pattern_hash_value){
-                flag = change_pixels(original, pattern, tochange, &n_tochange, i + 1 - pattern->height, col);
+                flag = change_pixels(original, out_image, pattern, i + 1 - pattern->height, col);
             }
         }
         if (i + 1 < original->height){

@@ -59,7 +59,7 @@ int main(int argc, char** argv){
 
 
     /* pintamos los pixeles de su color final (borrar las siguientes tres lineas)*/
-    search(out_image, query_image);
+    search(image, out_image, query_image);
 
 
 
