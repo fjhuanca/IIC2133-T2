@@ -24,17 +24,18 @@ int find_hash(Image* original, int col, int row, long long* hashes){
 int change_pixels(Image* original, Image* pattern, int* tochange, int *n_tochange, int row, int col){
     int org_pixels[pattern->pixel_count];
     int counter = 0;
-    bool equal;
+    bool equal = true;
     for (int i=0; i<pattern->height; i++){
         for (int j=0; j<pattern->width; j++){
             int org_index = coords2index(original, row + i, col + j);
-            org_pixels[counter] = original->pixels[org_index];
+            if(pattern->pixels[counter] != original->pixels[org_index]){
+                bool equal = false;
+                return 0;
+            };
             counter = counter + 1;
         }
     }
-    int compare = memcmp(org_pixels, pattern->pixels, sizeof(pattern->pixels));
-    if (compare == 0) equal = true;
-    else equal = false;
+
     if (equal){
         counter = 0;
         for (int i=0; i<pattern->height; i++){
@@ -106,6 +107,7 @@ int search(Image* original, Image* pattern){
             original_hash_value = original_hash_value - MOD(pot * original_hashes[k - pattern->width], PRIME);
             original_hash_value = MOD(original_hash_value, PRIME);
             col = col + 1;
+            // printf("%lld, %lld\n", original_hash_value, pattern_hash_value);
             if (original_hash_value == pattern_hash_value){
                 flag = change_pixels(original, pattern, tochange, &n_tochange, i + 1 - pattern->height, col);
             }
@@ -117,6 +119,7 @@ int search(Image* original, Image* pattern){
     for (int p=0; p<n_tochange; p++){
         original->pixels[tochange[p]] = GRAY;
     }   
+    // printf("\n");
 }
 
 
