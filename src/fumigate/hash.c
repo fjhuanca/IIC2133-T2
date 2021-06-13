@@ -6,11 +6,16 @@
 
 int find_hash(Image* original, int col, int row, long long* hashes){
     long long suma = 0;
-
+    int valor;
     for (int j=0; j<col; j++){
         for (int i=row-1; i>=0; i--){
             int index = coords2index(original, i, j);
-            int valor = original->pixels[index];
+            if(original->pixels[index] == BLACK){
+                valor = 1;
+            }
+            else{
+                valor = 2;
+            }
             long long pot = pow(RADIX, (row - i - 1));
             suma = suma + MOD ((pot * valor), PRIME);
         }
@@ -59,11 +64,23 @@ int col_rolling(Image* original, Image* pattern, long long* original_hashes, int
     for (int j=0; j<original->width; j++){
         int org_index = coords2index(original, next_row, j);
         int value = original->pixels[org_index];
+        if(original->pixels[org_index] == BLACK){
+            value = 1;
+        }
+        else{
+            value = 2;
+        }
         original_hashes[j] = MOD(original_hashes[j] * RADIX + value, PRIME);
         long long pot = pow(RADIX, pattern->height);        
 
         org_index = coords2index(original, next_row - pattern->height, j);
         value = original->pixels[org_index];
+        if(original->pixels[org_index] == BLACK){
+            value = 1;
+        }
+        else{
+            value = 2;
+        }
         original_hashes[j] = MOD(original_hashes[j] - (pot * value), PRIME);
         original_hashes[j] = MOD(original_hashes[j], PRIME);
     }

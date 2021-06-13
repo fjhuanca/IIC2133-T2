@@ -2,8 +2,8 @@
 
 #include "../imagelib/image.h"
 
-#define PRIME 2147483647
-#define RADIX 127
+#define PRIME 1
+#define RADIX 3
 
 #define BLACK 0
 #define WHITE 127
