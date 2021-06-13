@@ -3,16 +3,15 @@
 #include <string.h>
 #include <stdbool.h>
 #include "../imagelib/image.h"
+#include "hash.h"
 
 #define BLACK 0
 #define WHITE 127
 #define GRAY 64
 
 
-int main(int argc, char** argv)
-{  
-  if (argc != 2)
-  {
+int main(int argc, char** argv){  
+  if (argc != 2){
     printf("Modo de uso: %s INPUT \n", argv[0]);
     printf("Donde:\n");
     printf("\tINPUT es la ruta del archivo de input\n");
@@ -38,8 +37,7 @@ int main(int argc, char** argv)
   fscanf(input_file, "%d", &Q);
 
 
-  for (int q = 0; q < Q; q++)
-  {
+  for (int q = 0; q < Q; q++){
     /* Leemos las rutas de las imagenes */
     fscanf(input_file, "%s", query_in);
     fscanf(input_file, "%s", query_out);
@@ -55,13 +53,13 @@ int main(int argc, char** argv)
     out_image->width = image->width;
     out_image->pixel_count = image->pixel_count;
     out_image->pixels = calloc(image->pixel_count, sizeof(int));
-
+    for (int i=0; i<out_image->pixel_count; i++){
+      out_image->pixels[i] = image->pixels[i];
+    }
 
 
     /* pintamos los pixeles de su color final (borrar las siguientes tres lineas)*/
-      out_image->pixels[0] = BLACK;
-      out_image->pixels[4] = WHITE; 
-      out_image->pixels[5] = GRAY;
+    search(out_image, query_image);
 
 
 

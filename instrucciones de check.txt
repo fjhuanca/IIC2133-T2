@@ -1,0 +1,32 @@
+La carpeta llamada solutions debe quedar dentro de su directorio
+principal junto con check.py y la carpeta output, esto es para
+que check.py funcione.
+
+Su directorio tendrá una estructura similar a esta
+-T2-2021
+    -obj
+    -src
+    -tests
+        -Easy
+        -Medium
+        -Hard
+    -solutions
+        -Easy
+        -Medium
+        -Hard
+    -output (En esta carpeta iran tus outputs)
+        -Easy 
+	-Medium
+	-Hard
+    -check.py
+    -fumigate
+    -Makefile
+
+
+recuerde que check.py se corre asi
+check.py <dif> <i>
+donde <dif> puede ser Easy Medium o Hard
+e i es un entero entre 1 y 6.
+también pueden agregar el flag -i para ver solo los tests fallidos
+check.py <dif> <i> -i
+
