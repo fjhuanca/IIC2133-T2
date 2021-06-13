@@ -2,7 +2,7 @@
 
 #include "../imagelib/image.h"
 
-#define PRIME 1
+#define PRIME 2
 #define RADIX 3
 
 #define BLACK 0
@@ -17,3 +17,4 @@ int col_rolling(Image* original, Image* pattern, long long* original_hashes, int
 int search(Image* original, Image* pattern);
 int coords2index(Image* image, int row, int col);
 int index2coords(Image* image, int* row, int* col, int index);
+long long power(long long a,long long n,long long m);
