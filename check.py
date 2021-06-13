@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 from PIL import Image
 # pip install pillow
 import sys
@@ -9,7 +11,7 @@ import sys
 
 
 # checkea si 2 imagenes son iguales
-# según la ruta
+# segun la ruta
 def check_dif(route_1, route_2):
     im1 = Image.open(route_1)
     im2 = Image.open(route_2)
